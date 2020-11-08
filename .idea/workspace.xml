@@ -140,10 +140,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604196199891" />
-    <state x="540" y="274" key="AndroidCreateResourceFileDialog" timestamp="1604809406739">
+    <state x="540" y="274" key="AndroidCreateResourceFileDialog" timestamp="1604810069619">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="540" y="274" key="AndroidCreateResourceFileDialog/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604809406739" />
+    <state x="540" y="274" key="AndroidCreateResourceFileDialog/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604810069619" />
     <state width="1876" height="281" key="GridCell.Tab.0.bottom" timestamp="1604219490913">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -160,5 +160,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1876" height="281" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604219490913" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1604810271671">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604810271671" />
   </component>
 </project>
