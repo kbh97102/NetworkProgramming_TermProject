@@ -37,4 +37,13 @@ public class ChatListActivity extends AppCompatActivity {
         chatRooms = new ArrayList<>();
         clients = new ArrayList<>();
     }
+
+    private void addChatRoom(Client client1, Client client2){
+
+    }
+
+    private void deleteChatRoom(){
+
+    }
+
 }
