@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Network_TermProject</string>
+    <string name="send">send</string>
 </resources>

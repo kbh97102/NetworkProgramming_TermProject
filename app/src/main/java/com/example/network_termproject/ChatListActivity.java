@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.network_termproject.databinding.ChatListLayoutBinding;
+import com.example.network_termproject.network.AnotherClient;
 import com.example.network_termproject.network.Client;
 import com.example.network_termproject.recycler.ListAdapter;
 
@@ -17,7 +18,7 @@ public class ChatListActivity extends AppCompatActivity {
 
     private ChatListLayoutBinding binding;
     private ArrayList<ChatRoom> chatRooms;
-    private ArrayList<Client> clients;
+    private ArrayList<AnotherClient> users;
     private ListAdapter listAdapter;
 
     @Override
@@ -30,11 +31,12 @@ public class ChatListActivity extends AppCompatActivity {
         listAdapter = new ListAdapter(chatRooms);
         binding.chatListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.chatListRecyclerView.setAdapter(listAdapter);
+
     }
 
     private void init(){
         chatRooms = new ArrayList<>();
-        clients = new ArrayList<>();
+        users = new ArrayList<>();
     }
 
     private void addChatRoom(Client client1, Client client2){

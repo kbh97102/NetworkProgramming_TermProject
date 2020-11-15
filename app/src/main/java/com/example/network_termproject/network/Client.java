@@ -1,5 +1,7 @@
 package com.example.network_termproject.network;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,6 +9,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -34,13 +37,15 @@ public class Client {
         try {
             socket = SocketChannel.open(new InetSocketAddress(ip, port));
 
-            service.execute(this::read);
+            startRead();
         } catch (IOException e) {
             System.out.println("Socket open Error");
             e.printStackTrace();
         }
     }
-
+    public void startRead(){
+        service.execute(this::read);
+    }
     /*
     타입에 따라 형식 변경해야됨
     1. 텍스트
@@ -62,18 +67,29 @@ public class Client {
         });
     }
 
-    public Runnable read() {
+    public void read() {
         while (true) {
             try {
                 ByteBuffer buffer = ByteBuffer.allocate(100000);
                 socket.read(buffer);
                 buffer.flip();
                 byte[] arr = new byte[buffer.limit()];
-                JSONObject data = new JSONObject(new String(arr));
+                buffer.get(arr,0, buffer.limit());
+                JSONObject data = new JSONObject(new String(arr, StandardCharsets.UTF_8));
+                System.out.println(data.toString());
+                display.accept(data);
                 //화면에 반영 하기만 하면 됨
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
