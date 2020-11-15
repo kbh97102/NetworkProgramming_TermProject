@@ -5,10 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.network_termproject.databinding.ActivityMainBinding;
 import com.example.network_termproject.databinding.ChatListLayoutBinding;
+import com.example.network_termproject.network.Client;
 import com.example.network_termproject.recycler.ListAdapter;
 
 import java.util.ArrayList;

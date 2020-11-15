@@ -1,8 +1,22 @@
 package com.example.network_termproject;
 
-import java.util.ArrayList;
+import android.os.Bundle;
 
-public class ChatRoom {
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.network_termproject.databinding.ChatRoomLayoutBinding;
+import com.example.network_termproject.network.Client;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+
+public class ChatRoom extends AppCompatActivity {
 
     /*
     채팅방이 가져야할 정보들
@@ -12,9 +26,40 @@ public class ChatRoom {
      */
     private ArrayList<Client> clients;
     private String talkDataPath;
+    private Executor executor;
+    private ChatRoomLayoutBinding binding;
+    private HashMap<String, Consumer> displayMap;
 
     public ChatRoom(ArrayList<Client> clients) {
         this.clients = clients;
+        executor = Executors.newFixedThreadPool(2);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ChatRoomLayoutBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
+        displayMap = new HashMap<>();
+
+
+        startChat();
+    }
+
+    private void displayText(String text){
+
+    }
+
+    private void startChat(){
+        for(Client client : clients) {
+            executor.execute(client.read());
+        }
+    }
+
+    private void display(JSONObject data){
+
     }
 
     public void getTalkData(){
