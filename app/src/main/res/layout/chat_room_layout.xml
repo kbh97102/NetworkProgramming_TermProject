@@ -5,16 +5,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.Toolbar
+        android:background="#7eb5cc"
         android:id="@+id/chat_room_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="test"
+        app:title="ChatRoom"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:background="#7eb5cc"
         android:id="@+id/chat_room_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -32,7 +34,7 @@
         app:layout_constraintEnd_toStartOf="@id/chat_room_editGuideline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chat_room_editTop"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@android:color/white"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -48,18 +50,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.93"
+        app:layout_constraintGuide_percent="0.85"
         />
 
     <Button
         android:id="@+id/chat_room_sendButton"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/chat_room_editText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/chat_room_editTop"
         android:text="@string/send"
+        android:background="#fbff00"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

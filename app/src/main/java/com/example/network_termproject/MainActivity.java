@@ -14,8 +14,6 @@ import com.example.network_termproject.network.Client;
 
 public class MainActivity extends AppCompatActivity {
 
-    Client client;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +23,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 1);
         }
         else{
-            client = new Client();
-            Button button = findViewById(R.id.button);
-            button.setOnClickListener((v)-> client.write("no"));
+
         }
 
     }
@@ -35,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            client = new Client();
         }
     }
 }
