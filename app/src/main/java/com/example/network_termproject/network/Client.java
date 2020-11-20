@@ -73,7 +73,9 @@ public class Client {
 
     public void connect() {
         try {
+            Log.e("Connect", "before");
             socket.connect(new InetSocketAddress(ip, port));
+            Log.e("Connect", "after");
             read();
         } catch (IOException e) {
             e.printStackTrace();

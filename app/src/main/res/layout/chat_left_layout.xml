@@ -29,6 +29,7 @@
         android:textSize="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name_textView"
+        android:background="@drawable/other_text"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

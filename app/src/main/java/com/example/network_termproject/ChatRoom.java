@@ -64,11 +64,11 @@ public class ChatRoom extends AppCompatActivity {
             binding.chatRoomEditText.setText("");
         });
 
-        datas.add(dataBuilder.setName("hello").setContent("message").build());
-        datas.add(dataBuilder.setName("hello").setContent("message").build());
-        datas.add(dataBuilder.setName("hello").setContent("message").build());
-        datas.add(dataBuilder.setName("hello").setContent("message").build());
-        datas.add(dataBuilder.setName("hello").setContent("message").build());
+//        datas.add(dataBuilder.setName("hello").setContent("message").build());
+//        datas.add(dataBuilder.setName("hello").setContent("message").build());
+//        datas.add(dataBuilder.setName("hello").setContent("message").build());
+//        datas.add(dataBuilder.setName("hello").setContent("message").build());
+//        datas.add(dataBuilder.setName(Client.getInstance().getName()).setContent("message").build());
 
         chatAdapter.notifyDataSetChanged();
 
