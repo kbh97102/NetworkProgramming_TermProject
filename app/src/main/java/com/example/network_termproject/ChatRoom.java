@@ -1,7 +1,10 @@
 package com.example.network_termproject;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import com.example.network_termproject.network.Client;
 import com.example.network_termproject.network.NetData;
 import com.example.network_termproject.recycler.ChatAdapter;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -52,16 +56,30 @@ public class ChatRoom extends AppCompatActivity {
         binding.chatRoomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.chatRoomRecyclerView.setAdapter(chatAdapter);
         binding.chatRoomSendButton.setOnClickListener((v)->{
-            NetData clientData = dataBuilder.setType("text")
-                    .setName(Client.getInstance().getName())
+//            NetData clientData = dataBuilder.setType("text")
+//                    .setName(Client.getInstance().getName())
+//                    .setUserId(Client.getInstance().getId())
+//                    .setRoomId(chatRoomInfo.getRoom_id())
+//                    .setContent(binding.chatRoomEditText.getText().toString())
+//                    .build();
+//            datas.add(clientData);
+//            Client.getInstance().write(clientData);
+//            chatAdapter.notifyDataSetChanged();
+//            binding.chatRoomEditText.setText("");
+            //TODO 테스트용임 이모티콘 (이미지)보내기
+            Bitmap testBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.testicon);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            testBitmap.compress(Bitmap.CompressFormat.PNG, 95, byteArrayOutputStream);
+            String base64Data = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+            NetData clientData = dataBuilder.setType("image")
+                    .setName("nenenen")
                     .setUserId(Client.getInstance().getId())
+                    .setContent(base64Data)
                     .setRoomId(chatRoomInfo.getRoom_id())
-                    .setContent(binding.chatRoomEditText.getText().toString())
                     .build();
             datas.add(clientData);
-            Client.getInstance().write(clientData);
+//            Client.getInstance().write(clientData);
             chatAdapter.notifyDataSetChanged();
-            binding.chatRoomEditText.setText("");
         });
 
 //        datas.add(dataBuilder.setName("hello").setContent("message").build());

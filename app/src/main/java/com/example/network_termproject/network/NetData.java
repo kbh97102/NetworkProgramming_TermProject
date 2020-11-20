@@ -1,5 +1,9 @@
 package com.example.network_termproject.network;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,10 +27,10 @@ public class NetData {
         private String type;
         private String content;
         private String chatRoomId;
-        private ArrayList<String> list;
+        private JSONArray list;
 
         public Builder(){
-            list = new ArrayList<>();
+            list = new JSONArray();
         }
 
         public Builder setName(String name) {
@@ -44,8 +48,10 @@ public class NetData {
             return this;
         }
 
-        public Builder setList(ArrayList<String> list) {
-            this.list = list;
+        public Builder setList(ArrayList<String> dataList) {
+            for (String item : dataList){
+                this.list.put(item);
+            }
             return this;
         }
 
@@ -164,6 +170,16 @@ public class NetData {
                 arr.add(test);
             }
             return arr;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Bitmap getImage(){
+        try {
+            byte[] imageData = Base64.decode(data.getString("content"), Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
         } catch (JSONException e) {
             e.printStackTrace();
         }

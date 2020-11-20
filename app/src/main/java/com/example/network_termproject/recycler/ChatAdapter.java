@@ -1,6 +1,8 @@
 package com.example.network_termproject.recycler;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -33,7 +35,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void bind(NetData data) {
             binding.nameTextView.setText(data.getName());
-            binding.contentTextView.setText(data.getContent());
+            if (data.getType().equals("text")){
+                binding.contentTextView.setText(data.getContent());
+            }
+            else{
+                binding.contentTextView.setVisibility(View.INVISIBLE);
+                binding.contentTextView.setFocusable(false);
+                binding.contentImageView.setImageBitmap(data.getImage());
+            }
         }
     }
 
@@ -48,7 +57,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void bind(NetData data) {
             binding.nameTextView.setText(data.getName());
-            binding.contentTextView.setText(data.getContent());
+            if (data.getType().equals("text")){
+                binding.contentTextView.setText(data.getContent());
+            }
+            else{
+                binding.contentTextView.setVisibility(View.INVISIBLE);
+                binding.contentTextView.setFocusable(false);
+                binding.contentImageView.setImageBitmap(data.getImage());
+            }
         }
     }
 
