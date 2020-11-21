@@ -1,26 +1,27 @@
 package com.example.network_termproject;
 
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.network_termproject.databinding.ChatRoomLayoutBinding;
-import com.example.network_termproject.network.AnotherClient;
 import com.example.network_termproject.network.Client;
 import com.example.network_termproject.network.NetData;
 import com.example.network_termproject.recycler.ChatAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class ChatRoom extends AppCompatActivity {
 
@@ -36,6 +37,9 @@ public class ChatRoom extends AppCompatActivity {
     private ArrayList<NetData> datas;
     private NetData.Builder dataBuilder;
     private ChatRoomInfo chatRoomInfo;
+    private InputMethodManager imm;
+    int rootHeight = -1;
+    private boolean isEmojiSelected = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,43 +47,87 @@ public class ChatRoom extends AppCompatActivity {
         binding = ChatRoomLayoutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        chatRoomInfo = (ChatRoomInfo) getIntent().getSerializableExtra("chatRoomInfo");
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+
+        binding.chatRoomRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (rootHeight == -1) {
+                    rootHeight = binding.chatRoomRootView.getHeight();
+                }
+                Rect visibleFrameSize = new Rect();
+                binding.chatRoomRootView.getWindowVisibleDisplayFrame(visibleFrameSize);
+                int heightExceptKeyboard = visibleFrameSize.bottom - visibleFrameSize.top;
+                if (heightExceptKeyboard < rootHeight) {
+                    int keyboardHeight = rootHeight - heightExceptKeyboard;
+                    binding.emojiContainer.setMaxHeight(keyboardHeight);
+                }
+            }
+        });
+
         Bundle bundle = getIntent().getBundleExtra("chatRoomInfo");
         assert bundle != null;
-        chatRoomInfo = (ChatRoomInfo)bundle.getSerializable("chatRoomInfo");
+        chatRoomInfo = (ChatRoomInfo) bundle.getSerializable("chatRoomInfo");
 
         init();
 
         binding.chatRoomToolbar.setTitle(chatRoomInfo.getRoom_id());
 
+        binding.icon1.setOnClickListener(view -> {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Bitmap bitmap = ((BitmapDrawable)binding.icon1.getDrawable()).getBitmap();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 95, baos);
+            String base64Data = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+            dataBuilder.setType("image").setContent(base64Data);
+        });
+
         chatAdapter = new ChatAdapter(datas, Client.getInstance().getName());
         binding.chatRoomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.chatRoomRecyclerView.setAdapter(chatAdapter);
-        binding.chatRoomSendButton.setOnClickListener((v)->{
-//            NetData clientData = dataBuilder.setType("text")
-//                    .setName(Client.getInstance().getName())
-//                    .setUserId(Client.getInstance().getId())
-//                    .setRoomId(chatRoomInfo.getRoom_id())
-//                    .setContent(binding.chatRoomEditText.getText().toString())
-//                    .build();
-//            datas.add(clientData);
-//            Client.getInstance().write(clientData);
-//            chatAdapter.notifyDataSetChanged();
-//            binding.chatRoomEditText.setText("");
+        binding.chatRoomSendButton.setOnClickListener((v) -> {
+
             //TODO 테스트용임 이모티콘 (이미지)보내기
-            Bitmap testBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.testicon);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            testBitmap.compress(Bitmap.CompressFormat.PNG, 95, byteArrayOutputStream);
-            String base64Data = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
-            NetData clientData = dataBuilder.setType("image")
-                    .setName("nenenen")
-                    .setUserId(Client.getInstance().getId())
-                    .setContent(base64Data)
-                    .setRoomId(chatRoomInfo.getRoom_id())
-                    .build();
-            datas.add(clientData);
+            if (isEmojiSelected) {
+//                Bitmap testBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.testicon);
+//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                testBitmap.compress(Bitmap.CompressFormat.PNG, 95, byteArrayOutputStream);
+//                String base64Data = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+                NetData clientData = dataBuilder
+                        .setName(Client.getInstance().getName())
+                        .setUserId(Client.getInstance().getId())
+                        .setRoomId(chatRoomInfo.getRoom_id())
+                        .build();
+                datas.add(clientData);
 //            Client.getInstance().write(clientData);
-            chatAdapter.notifyDataSetChanged();
+                chatAdapter.notifyDataSetChanged();
+                isEmojiSelected = false;
+                binding.emojiContainer.setVisibility(View.INVISIBLE);
+            } else {
+                NetData clientData = dataBuilder.setType("text")
+                        .setName(Client.getInstance().getName())
+                        .setUserId(Client.getInstance().getId())
+                        .setRoomId(chatRoomInfo.getRoom_id())
+                        .setContent(binding.chatRoomEditText.getText().toString())
+                        .build();
+                datas.add(clientData);
+                Client.getInstance().write(clientData);
+                chatAdapter.notifyDataSetChanged();
+                binding.chatRoomEditText.setText("");
+            }
+
+        });
+
+
+        binding.chatRoomEmojiButton.setOnClickListener(view -> {
+            if (imm.isAcceptingText()) {
+                hideKeyboard();
+            }
+            if (binding.emojiContainer.getVisibility() == View.INVISIBLE) {
+                binding.emojiContainer.setVisibility(View.VISIBLE);
+            } else {
+                binding.emojiContainer.setVisibility(View.INVISIBLE);
+            }
         });
 
 //        datas.add(dataBuilder.setName("hello").setContent("message").build());
@@ -92,7 +140,11 @@ public class ChatRoom extends AppCompatActivity {
 
     }
 
-    private void init(){
+    private void hideKeyboard() {
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    private void init() {
         datas = new ArrayList<>();
         Client.getInstance().setDisplay(this::display);
         Client.getInstance().setName("testName");
@@ -100,18 +152,18 @@ public class ChatRoom extends AppCompatActivity {
     }
 
 
-    private void display(NetData data){
-        runOnUiThread(()->{
+    private void display(NetData data) {
+        runOnUiThread(() -> {
             datas.add(data);
             chatAdapter.notifyDataSetChanged();
         });
     }
 
-    public void getTalkData(){
+    public void getTalkData() {
 
     }
 
-    public String getRoomName(){
+    public String getRoomName() {
         return roomName;
     }
 }
