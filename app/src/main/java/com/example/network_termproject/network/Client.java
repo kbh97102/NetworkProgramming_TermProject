@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public class Client {
 
 
-    private String ip = "192.168.200.181";
+    private String ip = "192.168.200.120";
     private int port = 10101;
     private String name = "testName";
     private String id;
