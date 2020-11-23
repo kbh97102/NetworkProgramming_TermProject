@@ -2,7 +2,6 @@ package com.example.network_termproject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -76,10 +75,11 @@ public class ChatRoom extends AppCompatActivity {
 
         binding.icon1.setOnClickListener(view -> {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Bitmap bitmap = ((BitmapDrawable)binding.icon1.getDrawable()).getBitmap();
+            Bitmap bitmap = ((BitmapDrawable) binding.icon1.getDrawable()).getBitmap();
             bitmap.compress(Bitmap.CompressFormat.PNG, 95, baos);
             String base64Data = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
             dataBuilder.setType("image").setContent(base64Data);
+            isEmojiSelected = true;
         });
 
         chatAdapter = new ChatAdapter(datas, Client.getInstance().getName());
@@ -89,20 +89,17 @@ public class ChatRoom extends AppCompatActivity {
 
             //TODO 테스트용임 이모티콘 (이미지)보내기
             if (isEmojiSelected) {
-//                Bitmap testBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.testicon);
-//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//                testBitmap.compress(Bitmap.CompressFormat.PNG, 95, byteArrayOutputStream);
-//                String base64Data = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
                 NetData clientData = dataBuilder
                         .setName(Client.getInstance().getName())
                         .setUserId(Client.getInstance().getId())
                         .setRoomId(chatRoomInfo.getRoom_id())
                         .build();
                 datas.add(clientData);
-//            Client.getInstance().write(clientData);
+                Client.getInstance().write(clientData);
                 chatAdapter.notifyDataSetChanged();
                 isEmojiSelected = false;
                 binding.emojiContainer.setVisibility(View.INVISIBLE);
+                binding.emojiContainer.setFocusable(false);
             } else {
                 NetData clientData = dataBuilder.setType("text")
                         .setName(Client.getInstance().getName())
@@ -125,16 +122,12 @@ public class ChatRoom extends AppCompatActivity {
             }
             if (binding.emojiContainer.getVisibility() == View.INVISIBLE) {
                 binding.emojiContainer.setVisibility(View.VISIBLE);
+                binding.emojiContainer.setFocusable(true);
             } else {
                 binding.emojiContainer.setVisibility(View.INVISIBLE);
+                binding.emojiContainer.setFocusable(false);
             }
         });
-
-//        datas.add(dataBuilder.setName("hello").setContent("message").build());
-//        datas.add(dataBuilder.setName("hello").setContent("message").build());
-//        datas.add(dataBuilder.setName("hello").setContent("message").build());
-//        datas.add(dataBuilder.setName("hello").setContent("message").build());
-//        datas.add(dataBuilder.setName(Client.getInstance().getName()).setContent("message").build());
 
         chatAdapter.notifyDataSetChanged();
 
@@ -165,5 +158,11 @@ public class ChatRoom extends AppCompatActivity {
 
     public String getRoomName() {
         return roomName;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Client.getInstance().disconnect();
     }
 }

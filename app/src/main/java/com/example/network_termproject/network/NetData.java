@@ -27,10 +27,10 @@ public class NetData {
         private String type;
         private String content;
         private String chatRoomId;
-        private JSONArray list;
+        private ArrayList<String> list;
 
         public Builder(){
-            list = new JSONArray();
+            list = new ArrayList<>();
         }
 
         public Builder setName(String name) {
@@ -49,9 +49,7 @@ public class NetData {
         }
 
         public Builder setList(ArrayList<String> dataList) {
-            for (String item : dataList){
-                this.list.put(item);
-            }
+            this.list = dataList;
             return this;
         }
 
@@ -68,6 +66,12 @@ public class NetData {
         public NetData build() {
             NetData clientData = new NetData();
             clientData.data = new JSONObject();
+            JSONArray idList = new JSONArray();
+            if (list.size() > 0){
+                for (String id : list){
+                    idList.put(id);
+                }
+            }
             try{
                 if (name.equals("no")){
                     name = Client.getInstance().getName();
@@ -75,16 +79,16 @@ public class NetData {
                 clientData.data.put("name", name);
                 clientData.data.put("type", type);
                 clientData.data.put("content", content);
-                clientData.data.put("list", list);
+                clientData.data.put("list", idList);
                 clientData.data.put("roomId", chatRoomId);
                 clientData.data.put("userId", userId);
             }
             catch (JSONException e){
                 e.printStackTrace();
             }
+            list.clear();
             return clientData;
         }
-
 
         public NetData parseServerData(String data)  {
             NetData receivedData = new NetData();

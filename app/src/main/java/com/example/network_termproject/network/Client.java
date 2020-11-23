@@ -8,18 +8,20 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Objects;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class Client {
-
+    //notebook 120
 
     private String ip = "192.168.200.120";
     private int port = 10101;
     private String name = "testName";
     private String id;
     private SocketChannel socket;
-    private Executor executor;
+    private ExecutorService executor;
     private Consumer<NetData> display;
     private Consumer<NetData> setList;
     private Consumer<String> addChatRoom;
@@ -34,7 +36,7 @@ public class Client {
         clientDataBuilder = new NetData.Builder();
         executor.execute(this::socketInit);
 //        service.execute(this::socketInit);
-        name = "testName";
+        name = "NewClient";
     }
 
     public void setId(String id) {
@@ -99,6 +101,7 @@ public class Client {
             try {
                 socket.write(data.parseByteBuffer());
             } catch (IOException e) {
+                disconnect();
                 e.printStackTrace();
             }
         });
@@ -117,6 +120,7 @@ public class Client {
                     doWorkWithType(clientDataBuilder.parseServerData(new String(arr)));
                     //화면에 반영 하기만 하면 됨
                 } catch (IOException e) {
+                    disconnect();
                     e.printStackTrace();
                 }
             }
@@ -145,5 +149,17 @@ public class Client {
 
     public void setAddChatRoom(Consumer<String> addChatRoom) {
         this.addChatRoom = addChatRoom;
+    }
+
+    public void disconnect(){
+        write(clientDataBuilder.setType("disconnect").setUserId(id).build());
+        executor.shutdown();
+        try{
+            if (!executor.awaitTermination(3000, TimeUnit.MILLISECONDS)){
+                executor.shutdownNow();
+            }
+        }catch (InterruptedException e){
+            executor.shutdownNow();
+        }
     }
 }

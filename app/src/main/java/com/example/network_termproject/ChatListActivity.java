@@ -50,17 +50,14 @@ public class ChatListActivity extends AppCompatActivity {
 
         init();
         listAdapter = new ListAdapter(chatRoomInfos, this);
+        listAdapter.setIntentChatRoom(this::intentChatRoom);
         binding.chatListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.chatListRecyclerView.setAdapter(listAdapter);
-        listAdapter.setIntentChatRoom(this::intentChatRoom);
 
-        chatRoomInfos.add(new ChatRoomInfo());
-        chatRoomInfos.add(new ChatRoomInfo());
-        chatRoomInfos.add(new ChatRoomInfo());
-        chatRoomInfos.add(new ChatRoomInfo());
-        chatRoomInfos.add(new ChatRoomInfo());
 
         listAdapter.notifyDataSetChanged();
+
+
 
         binding.chatListAddButton.setOnClickListener(view -> {
             Intent intent = new Intent();
@@ -87,6 +84,10 @@ public class ChatListActivity extends AppCompatActivity {
             if (Objects.isNull(userList) || userList.size() <= 0){
                 return;
             }
+            //선택된 친구 아이디 리스트에 자기 자신도 포함
+            userList.add(Client.getInstance().getId());
+            Log.e("list size", userList.size()+" users");
+            //본인 포함 선택된 친구들 리스트와 함께 채팅방 생성 요청
             Client.getInstance().write(dataBuilder.setType("requestAdd")
                     .setUserId(Client.getInstance().getId())
                     .setList(userList)
@@ -124,4 +125,10 @@ public class ChatListActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Client.getInstance().disconnect();
+    }
 }
