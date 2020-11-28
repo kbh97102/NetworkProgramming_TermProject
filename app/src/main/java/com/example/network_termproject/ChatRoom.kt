@@ -1,11 +1,17 @@
 package com.example.network_termproject
 
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.network_termproject.databinding.ChatRoomLayoutBinding
@@ -18,8 +24,11 @@ import java.nio.ByteBuffer
 import java.util.*
 import java.util.function.Consumer
 
+
+@RequiresApi(Build.VERSION_CODES.P)
 class ChatRoom : AppCompatActivity() {
 
+    private val galleryRequestCode = 30
     private var chatAdapter: ChatAdapter? = null
     private var datas: ArrayList<NetData>? = null
     private var dataBuilder: NetData.Builder? = null
@@ -87,9 +96,11 @@ class ChatRoom : AppCompatActivity() {
                         .build()
                 datas!!.add(clientData)
                 val header = ByteBuffer.allocate(6)
-                header.putChar('s')
-                header.putInt(clientData.data.toString().toByteArray().size)
-                header.flip()
+                header.apply {
+                    putChar('s')
+                    putInt(clientData.data.toString().toByteArray().size)
+                    flip()
+                }
 
                 var buffer = ByteBuffer.allocate(6 + clientData.data.toString().toByteArray().size)
                 buffer.apply {
@@ -132,7 +143,7 @@ class ChatRoom : AppCompatActivity() {
                 chat_room_editText.setText("")
             }
         }
-        chat_room_emoji_button.setOnClickListener { view: View? ->
+        chat_room_emoji_button.setOnClickListener {
             if (imm!!.isAcceptingText) {
                 hideKeyboard()
             }
@@ -147,6 +158,9 @@ class ChatRoom : AppCompatActivity() {
                     isFocusable = false
                 }
             }
+        }
+        chat_room_image_button.setOnClickListener {
+            getImageFromGallery()
         }
     }
 
@@ -189,5 +203,51 @@ class ChatRoom : AppCompatActivity() {
         }
         return if (mediaDir != null && mediaDir.exists())
             mediaDir else filesDir
+    }
+
+    private fun getImageFromGallery() {
+        val intent = Intent().apply {
+            action = Intent.ACTION_GET_CONTENT
+            type = "image/*"
+        }
+        startActivityForResult(intent, galleryRequestCode)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == galleryRequestCode && resultCode == RESULT_OK && Objects.nonNull(data)) {
+            val baos = ByteArrayOutputStream()
+            val imageBitmap = ImageDecoder.createSource(this.contentResolver, data!!.data!!).let { ImageDecoder.decodeBitmap(it) }
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 95, baos)
+            val imageData = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
+            val clientData = dataBuilder!!.setName(Client.instance.name)
+                    .setType("image")
+                    .setContent(imageData)
+                    .setRoomId(chatRoomInfo!!.room_id!!)
+                    .setUserId(Client.instance.id!!)
+                    .build()
+
+            datas!!.add(clientData)
+            baos.close()
+
+            val header = ByteBuffer.allocate(6)
+            header.apply {
+                putChar('s')
+                putInt(clientData.data.toString().toByteArray().size)
+                flip()
+            }
+
+            var buffer = ByteBuffer.allocate(6 + clientData.data.toString().toByteArray().size)
+            buffer.apply {
+                put(header)
+                put(clientData.data.toString().toByteArray())
+            }
+            buffer.flip()
+
+            Client.instance.write(buffer)
+
+            chatAdapter!!.notifyDataSetChanged()
+        }
     }
 }
