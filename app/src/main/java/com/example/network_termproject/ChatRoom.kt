@@ -136,7 +136,7 @@ class ChatRoom : AppCompatActivity() {
             if (imm!!.isAcceptingText) {
                 hideKeyboard()
             }
-            if (chat_room_emoji_button.visibility == View.INVISIBLE) {
+            if (emoji_container.visibility == View.INVISIBLE) {
                 emoji_container.apply {
                     visibility = View.VISIBLE
                     isFocusable = true

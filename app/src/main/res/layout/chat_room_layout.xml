@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/chat_room_editText"
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         android:visibility="invisible"
         >
         <ImageView
