@@ -2,7 +2,6 @@ package com.example.network_termproject.recycler
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -22,7 +21,11 @@ class ListAdapter(private val chatRoomInfos: ArrayList<ChatRoomInfo>?, private v
 
     inner class ListHolder(val binding: ChatListItemLayoutBinding) : ViewHolder(binding.root) {
         fun bind(chatRoom: ChatRoomInfo) {
-            binding.chatListNameTextView.text = chatRoom.room_id
+            val nameText = "${chatRoom.room_id}'s Room"
+            binding.chatListNameTextView.text = nameText
+            if (Objects.nonNull(chatRoom.user_ids)){
+                binding.chatListUsersNumberTextView.text = (chatRoom.user_ids!!.size).toString()
+            }
         }
     }
 
@@ -32,8 +35,7 @@ class ListAdapter(private val chatRoomInfos: ArrayList<ChatRoomInfo>?, private v
     }
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
-//        holder.binding.getRoot().setOnClickListener((v) -> context.startActivity(new Intent(context, chatRoomInfos.get(position).getClass())));
-        holder.binding.root.setOnClickListener { view: View? -> intentChatRoom!!.accept(chatRoomInfos!![position]) }
+        holder.binding.root.setOnClickListener { intentChatRoom!!.accept(chatRoomInfos!![position]) }
         val selectedChatRoom = chatRoomInfos!![position]
         holder.bind(selectedChatRoom)
     }

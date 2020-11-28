@@ -17,7 +17,9 @@ import com.example.network_termproject.recycler.ListAdapter
 import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.util.*
+import java.util.function.BiConsumer
 import java.util.function.Consumer
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class ChatListActivity : AppCompatActivity() {
@@ -103,13 +105,16 @@ class ChatListActivity : AppCompatActivity() {
         users = ArrayList()
         chatRoomInfos = ArrayList()
         dataBuilder = NetData.Builder()
-        Client.instance.setAddChatRoom(Consumer { roomId: String? -> addChatRoom(roomId) })
+        Client.instance.setAddChatRoom(BiConsumer { roomId: String?, list:ArrayList<String> -> addChatRoom(roomId, list) })
     }
 
-    private fun addChatRoom(roomId: String?) {
+    private fun addChatRoom(roomId: String?, list : ArrayList<String>) {
         runOnUiThread {
             val info = ChatRoomInfo()
-            info.room_id = roomId
+            info.apply {
+                room_id = roomId
+                user_ids = list
+            }
             chatRoomInfos!!.add(info)
             listAdapter!!.notifyDataSetChanged()
         }

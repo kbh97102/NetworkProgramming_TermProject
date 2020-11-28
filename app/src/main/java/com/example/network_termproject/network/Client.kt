@@ -9,7 +9,9 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import java.util.function.BiConsumer
 import java.util.function.Consumer
+import kotlin.collections.ArrayList
 
 class Client private constructor() {
     //notebook 120
@@ -22,7 +24,7 @@ class Client private constructor() {
     private var executor: ExecutorService = Executors.newFixedThreadPool(10)
     private var display: Consumer<NetData>? = null
     private var setList: Consumer<NetData>? = null
-    private var addChatRoom: Consumer<String>? = null
+    private var addChatRoom: BiConsumer<String, ArrayList<String>>? = null
     private val clientDataBuilder: NetData.Builder = NetData.Builder()
 
     private object ClientHolder {
@@ -143,7 +145,7 @@ class Client private constructor() {
                 id = serverData.getContent()
             }
             serverData.getType() == "requestAdd" -> {
-                addChatRoom!!.accept(serverData.getContent())
+                addChatRoom!!.accept(serverData.getContent(), serverData.getList())
             }
             serverData.getType() == "image" -> {
                 display?.accept(serverData)
@@ -154,7 +156,7 @@ class Client private constructor() {
         }
     }
 
-    fun setAddChatRoom(addChatRoom: Consumer<String>?) {
+    fun setAddChatRoom(addChatRoom: BiConsumer<String, ArrayList<String>>?) {
         this.addChatRoom = addChatRoom
     }
 
