@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +16,6 @@ import java.io.*
 import java.nio.ByteBuffer
 import java.util.*
 import java.util.function.Consumer
-import java.util.stream.Collectors
 
 class ChatRoom : AppCompatActivity() {
 
@@ -36,6 +34,8 @@ class ChatRoom : AppCompatActivity() {
         binding = ChatRoomLayoutBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
+
+
         init()
 
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -48,7 +48,7 @@ class ChatRoom : AppCompatActivity() {
             val reader = FileReader(talkSaveFile)
             val bufferedReader = BufferedReader(reader)
             val iterator = bufferedReader.lineSequence().iterator()
-            while(iterator.hasNext()){
+            while (iterator.hasNext()) {
                 datas!!.add(saver.parseToNetData(iterator.next()))
             }
             bufferedReader.close()
@@ -58,7 +58,7 @@ class ChatRoom : AppCompatActivity() {
 
         binding?.chatRoomToolbar?.title = chatRoomInfo!!.room_id
 
-        chatAdapter = ChatAdapter(datas!!, Client.instance.name)
+        chatAdapter = ChatAdapter(datas!!, Client.instance.name, supportFragmentManager)
         binding!!.chatRoomRecyclerView.layoutManager = LinearLayoutManager(this)
         binding!!.chatRoomRecyclerView.adapter = chatAdapter
 

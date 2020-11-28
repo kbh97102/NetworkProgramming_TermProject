@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -14,11 +15,9 @@ import com.example.network_termproject.network.AnotherClient
 import com.example.network_termproject.network.Client
 import com.example.network_termproject.network.NetData
 import com.example.network_termproject.recycler.ListAdapter
-import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.util.*
 import java.util.function.BiConsumer
-import java.util.function.Consumer
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 

@@ -11,11 +11,15 @@
   <component name="ChangeListManager">
     <list default="true" id="1bf9ff23-3d0b-4c75-a84a-ba9b59ba00f8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/ChatListActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/ChatListActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/network/Client.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/network/Client.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/recycler/ListAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/recycler/ListAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/chat_list_item_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chat_list_item_layout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/ChatRoom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/ChatRoom.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/recycler/ChatAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/network_termproject/recycler/ChatAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,8 +49,8 @@
       <list>
         <option value="valueResourceFile" />
         <option value="resourceFile" />
-        <option value="layoutResourceFile" />
         <option value="Class" />
+        <option value="layoutResourceFile" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -67,9 +71,11 @@
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-11-16T15:11:03.224Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android-custom-viewC:/Users/kbh/AndroidStudioProjects/Network_TermProject/app/src/main/java/com/example/network_termproject/EmojiTest.java_SELECTED" value="EmojiTest" />
+    <property name="android-custom-viewC:/Users/kbh/AndroidStudioProjects/Network_TermProject/app/src/main/java/com/example/network_termproject/PopUpImage.kt_SELECTED" value="PopUpImage" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable-v24" />
     <property name="multi-representation-previewC:/Users/kbh/AndroidStudioProjects/Network_TermProject/app/src/main/java/com/example/network_termproject/EmojiTest.java_selected" value="Custom views" />
+    <property name="multi-representation-previewC:/Users/kbh/AndroidStudioProjects/Network_TermProject/app/src/main/java/com/example/network_termproject/PopUpImage.kt_selected" value="Custom views" />
     <property name="project.structure.last.edited" value="Suggestions" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -190,11 +196,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606567395328" />
-    <state x="540" y="274" key="AndroidCreateResourceFileDialog" timestamp="1605951178859">
+    <state x="540" y="274" key="AndroidCreateResourceFileDialog" timestamp="1606570350806">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="540" y="274" key="AndroidCreateResourceFileDialog/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604810364003" />
-    <state x="540" y="274" key="AndroidCreateResourceFileDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1605951178859" />
+    <state x="540" y="274" key="AndroidCreateResourceFileDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606570350806" />
     <state x="817" y="332" key="AndroidCreateXmlResourceDialog" timestamp="1605416422683">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -203,42 +209,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606565246469" />
-    <state width="1877" height="281" key="GridCell.Tab.0.bottom" timestamp="1606568871084">
+    <state width="1877" height="347" key="GridCell.Tab.0.bottom" timestamp="1606573036077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1876" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604219490913" />
-    <state width="1877" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606568871084" />
-    <state width="1877" height="281" key="GridCell.Tab.0.center" timestamp="1606568871083">
+    <state width="1877" height="347" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606573036077" />
+    <state width="1877" height="347" key="GridCell.Tab.0.center" timestamp="1606573036077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1876" height="281" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604219490913" />
-    <state width="1877" height="281" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606568871083" />
-    <state width="1877" height="281" key="GridCell.Tab.0.left" timestamp="1606568871083">
+    <state width="1877" height="347" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606573036077" />
+    <state width="1877" height="347" key="GridCell.Tab.0.left" timestamp="1606573036077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1876" height="281" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604219490913" />
-    <state width="1877" height="281" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606568871083" />
-    <state width="1877" height="281" key="GridCell.Tab.0.right" timestamp="1606568871083">
+    <state width="1877" height="347" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606573036077" />
+    <state width="1877" height="347" key="GridCell.Tab.0.right" timestamp="1606573036077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1876" height="281" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-853.1080.1880@0.0.1920.1040" timestamp="1604219490913" />
-    <state width="1877" height="281" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606568871083" />
-    <state width="1877" height="347" key="GridCell.Tab.1.bottom" timestamp="1606558534485">
+    <state width="1877" height="347" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606573036077" />
+    <state width="1877" height="347" key="GridCell.Tab.1.bottom" timestamp="1606573036078">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="347" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606558534485" />
-    <state width="1877" height="347" key="GridCell.Tab.1.center" timestamp="1606558534485">
+    <state width="1877" height="347" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606573036078" />
+    <state width="1877" height="347" key="GridCell.Tab.1.center" timestamp="1606573036077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="347" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606558534485" />
-    <state width="1877" height="347" key="GridCell.Tab.1.left" timestamp="1606558534485">
+    <state width="1877" height="347" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606573036077" />
+    <state width="1877" height="347" key="GridCell.Tab.1.left" timestamp="1606573036077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="347" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606558534485" />
-    <state width="1877" height="347" key="GridCell.Tab.1.right" timestamp="1606558534485">
+    <state width="1877" height="347" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606573036077" />
+    <state width="1877" height="347" key="GridCell.Tab.1.right" timestamp="1606573036078">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="347" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606558534485" />
+    <state width="1877" height="347" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606573036078" />
     <state x="1920" y="38" width="1611" height="718" maximized="true" key="dock-window-1" timestamp="1606145691343">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
