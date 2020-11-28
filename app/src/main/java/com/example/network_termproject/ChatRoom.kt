@@ -12,6 +12,7 @@ import com.example.network_termproject.databinding.ChatRoomLayoutBinding
 import com.example.network_termproject.network.Client
 import com.example.network_termproject.network.NetData
 import com.example.network_termproject.recycler.ChatAdapter
+import kotlinx.android.synthetic.main.chat_room_layout.*
 import java.io.*
 import java.nio.ByteBuffer
 import java.util.*
@@ -19,7 +20,6 @@ import java.util.function.Consumer
 
 class ChatRoom : AppCompatActivity() {
 
-    private var binding: ChatRoomLayoutBinding? = null
     private var chatAdapter: ChatAdapter? = null
     private var datas: ArrayList<NetData>? = null
     private var dataBuilder: NetData.Builder? = null
@@ -31,10 +31,7 @@ class ChatRoom : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ChatRoomLayoutBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
-
-
+        setContentView(R.layout.chat_room_layout)
 
         init()
 
@@ -56,19 +53,20 @@ class ChatRoom : AppCompatActivity() {
 
         setButtonEvent()
 
-        binding?.chatRoomToolbar?.title = chatRoomInfo!!.room_id
+        chat_room_toolbar.title = chatRoomInfo!!.room_id
 
         chatAdapter = ChatAdapter(datas!!, Client.instance.name, supportFragmentManager)
-        binding!!.chatRoomRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding!!.chatRoomRecyclerView.adapter = chatAdapter
-
+        chat_room_recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@ChatRoom)
+            adapter = chatAdapter
+        }
         chatAdapter!!.notifyDataSetChanged()
     }
 
     private fun setButtonEvent() {
-        binding?.icon2?.setOnClickListener {
+        icon_2.setOnClickListener {
             val baos = ByteArrayOutputStream()
-            val bitmap = (binding!!.icon2.drawable as BitmapDrawable).bitmap
+            val bitmap = (icon_2.drawable as BitmapDrawable).bitmap
             bitmap.compress(Bitmap.CompressFormat.PNG, 95, baos)
             val imageData = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
             dataBuilder!!.setType("image").setContent(imageData)
@@ -79,7 +77,7 @@ class ChatRoom : AppCompatActivity() {
             }
             isEmojiSelected = true
         }
-        binding!!.chatRoomSendButton.setOnClickListener {
+        chat_room_sendButton.setOnClickListener {
 
             if (isEmojiSelected) {
                 val clientData = dataBuilder!!
@@ -104,20 +102,24 @@ class ChatRoom : AppCompatActivity() {
 
                 chatAdapter!!.notifyDataSetChanged()
                 isEmojiSelected = false
-                binding!!.emojiContainer.visibility = View.INVISIBLE
-                binding!!.emojiContainer.isFocusable = false
+                emoji_container.apply {
+                    visibility = View.INVISIBLE
+                    isFocusable = false
+                }
             } else {
                 val clientData = dataBuilder!!.setType("text")
                         .setName(Client.instance.name)
                         .setUserId(Client.instance.id!!)
                         .setRoomId(chatRoomInfo!!.room_id!!)
-                        .setContent(binding!!.chatRoomEditText.text.toString())
+                        .setContent(chat_room_editText.text.toString())
                         .build()
                 datas!!.add(clientData)
                 val header = ByteBuffer.allocate(6)
-                header.putChar('s')
-                header.putInt(clientData.data.toString().toByteArray().size)
-                header.flip()
+                header.apply {
+                    putChar('s')
+                    putInt(clientData.data.toString().toByteArray().size)
+                    flip()
+                }
                 var buffer = ByteBuffer.allocate(6 + clientData.data.toString().toByteArray().size)
                 buffer.apply {
                     put(header)
@@ -127,19 +129,23 @@ class ChatRoom : AppCompatActivity() {
 
                 Client.instance.write(buffer)
                 chatAdapter!!.notifyDataSetChanged()
-                binding!!.chatRoomEditText.setText("")
+                chat_room_editText.setText("")
             }
         }
-        binding!!.chatRoomEmojiButton.setOnClickListener { view: View? ->
+        chat_room_emoji_button.setOnClickListener { view: View? ->
             if (imm!!.isAcceptingText) {
                 hideKeyboard()
             }
-            if (binding!!.emojiContainer.visibility == View.INVISIBLE) {
-                binding!!.emojiContainer.visibility = View.VISIBLE
-                binding!!.emojiContainer.isFocusable = true
+            if (chat_room_emoji_button.visibility == View.INVISIBLE) {
+                emoji_container.apply {
+                    visibility = View.VISIBLE
+                    isFocusable = true
+                }
             } else {
-                binding!!.emojiContainer.visibility = View.INVISIBLE
-                binding!!.emojiContainer.isFocusable = false
+                emoji_container.apply {
+                    visibility = View.INVISIBLE
+                    isFocusable = false
+                }
             }
         }
     }
@@ -162,7 +168,6 @@ class ChatRoom : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
         val fileWriter = FileWriter(talkSaveFile)
         val bufferedWriter = BufferedWriter(fileWriter)
         for (data in datas!!.iterator()) {
