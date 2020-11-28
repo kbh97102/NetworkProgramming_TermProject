@@ -22,7 +22,6 @@ class NetData {
         private lateinit var type: String
         private var content: String? = null
         private var list: ArrayList<String>? = null
-        private var imageData :String? = null
 
         fun setName(name: String): Builder {
             this.name = name
@@ -54,11 +53,6 @@ class NetData {
             return this
         }
 
-        fun setImage(imageData : String):Builder{
-            this.imageData = imageData
-            return this
-        }
-
         fun build(): NetData {
             var clientData = NetData()
             clientData.data = JSONObject()
@@ -79,7 +73,6 @@ class NetData {
                     put("list", idList)
                     put("roomId", roomID)
                     put("userId", userID)
-                    put("image", imageData)
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -133,7 +126,7 @@ class NetData {
     }
 
     fun getImage():Bitmap{
-        val imageData = data["image"] as String
+        val imageData = data["content"] as String
         val imageArr = Base64.decode(imageData, Base64.DEFAULT)
         return BitmapFactory.decodeByteArray(imageArr,0, imageArr.size)
     }

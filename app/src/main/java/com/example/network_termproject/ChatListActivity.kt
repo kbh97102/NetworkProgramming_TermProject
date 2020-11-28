@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -15,15 +14,17 @@ import com.example.network_termproject.network.AnotherClient
 import com.example.network_termproject.network.Client
 import com.example.network_termproject.network.NetData
 import com.example.network_termproject.recycler.ListAdapter
+import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.util.*
 import java.util.function.Consumer
+import kotlin.collections.HashMap
 
 class ChatListActivity : AppCompatActivity() {
 
     private val listRequestCode = 10
     private var binding: ChatListLayoutBinding? = null
-    private var chatRooms: ArrayList<ChatRoom>? = null
+    private var chatRooms: HashMap<ChatRoomInfo, ChatRoom>? = null
     private var chatRoomInfos: ArrayList<ChatRoomInfo>? = null
     private var users: ArrayList<AnotherClient>? = null
     private var listAdapter: ListAdapter? = null
@@ -86,7 +87,7 @@ class ChatListActivity : AppCompatActivity() {
             header.putInt(mainData.data.toString().toByteArray().size)
             header.flip()
 
-            var buffer = ByteBuffer.allocate(6+mainData.data.toString().toByteArray().size)
+            var buffer = ByteBuffer.allocate(6 + mainData.data.toString().toByteArray().size)
             buffer.apply {
                 put(header)
                 put(mainData.data.toString().toByteArray())
@@ -98,7 +99,7 @@ class ChatListActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        chatRooms = ArrayList()
+        chatRooms = HashMap()
         users = ArrayList()
         chatRoomInfos = ArrayList()
         dataBuilder = NetData.Builder()
@@ -123,6 +124,7 @@ class ChatListActivity : AppCompatActivity() {
     }
 
     private fun deleteChatRoom() {}
+
     override fun onDestroy() {
         super.onDestroy()
         Client.instance.disconnect()

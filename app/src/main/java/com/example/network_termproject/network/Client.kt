@@ -146,10 +146,10 @@ class Client private constructor() {
                 addChatRoom!!.accept(serverData.getContent())
             }
             serverData.getType() == "image" -> {
-                display!!.accept(serverData)
+                display?.accept(serverData)
             }
             else -> {
-                display!!.accept(serverData)
+                display?.accept(serverData)
             }
         }
     }
