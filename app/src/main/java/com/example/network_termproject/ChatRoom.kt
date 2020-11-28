@@ -165,8 +165,4 @@ class ChatRoom : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Client.instance.disconnect()
-    }
 }

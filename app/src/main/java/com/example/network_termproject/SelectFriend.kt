@@ -49,7 +49,6 @@ class SelectFriend : AppCompatActivity() {
             val intent = Intent()
             setResult(RESULT_CANCELED, intent)
             finish()
-            Log.d("Options", "in")
         }
         return false
     }
@@ -58,8 +57,6 @@ class SelectFriend : AppCompatActivity() {
         val builder = NetData.Builder()
         Client.instance.setList(Consumer { serverData: NetData? -> setList(serverData!!) })
         val mainData = builder.setType("requestList").setUserId(Client.instance.id!!).build()
-
-        Log.e("Friend data size", "${mainData.data.toString().toByteArray().size}")
 
         val header = ByteBuffer.allocate(6)
         header.putChar('s')
@@ -72,8 +69,7 @@ class SelectFriend : AppCompatActivity() {
             put(mainData.data.toString().toByteArray())
         }
         buffer.flip()
-        Log.e("Friend data", mainData.data.toString())
-        Log.e("before", buffer.toString())
+
         Client.instance.write(buffer)
     }
 

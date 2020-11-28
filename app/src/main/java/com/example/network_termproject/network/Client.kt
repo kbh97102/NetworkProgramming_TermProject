@@ -16,7 +16,7 @@ class Client private constructor() {
     //pc 181
     private val ip = "192.168.200.120"
     private val port = 10101
-    var name = "testName"
+    var name = "x1"
     var id: String? = null
     private var socket: SocketChannel? = null
     private var executor: ExecutorService = Executors.newFixedThreadPool(10)
@@ -177,6 +177,5 @@ class Client private constructor() {
 
     init {
         executor.execute { socketInit() }
-        name = "x2"
     }
 }
