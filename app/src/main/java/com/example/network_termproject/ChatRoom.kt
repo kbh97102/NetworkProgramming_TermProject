@@ -70,7 +70,6 @@ class ChatRoom : AppCompatActivity() {
             val baos = ByteArrayOutputStream()
             val bitmap = (binding!!.icon2.drawable as BitmapDrawable).bitmap
             bitmap.compress(Bitmap.CompressFormat.PNG, 95, baos)
-            //            dataBuilder.setType("image").setImageData(baos);
             val imageData = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
             dataBuilder!!.setType("image").setContent(imageData)
             try {
@@ -82,7 +81,6 @@ class ChatRoom : AppCompatActivity() {
         }
         binding!!.chatRoomSendButton.setOnClickListener {
 
-            //TODO 테스트용임 이모티콘 (이미지)보내기
             if (isEmojiSelected) {
                 val clientData = dataBuilder!!
                         .setName(Client.instance.name)

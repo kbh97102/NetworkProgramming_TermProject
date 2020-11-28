@@ -22,6 +22,8 @@ import kotlin.collections.HashMap
 
 class ChatListActivity : AppCompatActivity() {
 
+    private val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
     private val listRequestCode = 10
     private var binding: ChatListLayoutBinding? = null
     private var chatRooms: HashMap<ChatRoomInfo, ChatRoom>? = null
@@ -35,8 +37,8 @@ class ChatListActivity : AppCompatActivity() {
         binding = ChatListLayoutBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.INTERNET), 1)
+        if (!checkPermissions()) {
+            ActivityCompat.requestPermissions(this, permissions, 1)
         } else {
             Log.d("Permission", "ok")
         }
@@ -50,17 +52,15 @@ class ChatListActivity : AppCompatActivity() {
             chatListRecyclerView.adapter = listAdapter
         }
 
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_2);
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
-//        String data = Base64.encodeToString(byteArrayOutputStream, Base64.NO_WRAP);
-//        dataBuilder.setType("image")
         binding!!.chatListAddButton.setOnClickListener {
             val intent = Intent()
             intent.setClass(this, SelectFriend::class.java)
             startActivityForResult(intent, listRequestCode)
         }
     }
+
+    private fun checkPermissions() =
+            permissions.all { ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED}
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
