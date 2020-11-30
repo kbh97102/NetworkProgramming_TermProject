@@ -10,25 +10,30 @@ class TalkDataSaver {
         val builder = StringBuilder()
         builder.apply {
             append(name)
-            append(" ")
+            append("//")
             append(user_id)
-            append(" ")
+            append("//")
             append(type)
-            append(" ")
+            append("//")
             append(content)
         }
         return builder.toString()
     }
 
-    fun parseToNetData(data : String):NetData{
-        val dataArray = data.split(" ")
-        val builder = NetData.Builder()
-        builder.apply {
-            setName(dataArray[0])
-            setUserId(dataArray[1])
-            setType(dataArray[2])
-            setContent(dataArray[3])
+    fun parseToNetData(data : String):NetData?{
+        Log.e("ParsetoNetData", data)
+        val dataArray = data.split("//")
+        Log.e("chatDis", "${dataArray.size}")
+        if (dataArray.size >= 4){
+            val builder = NetData.Builder()
+            builder.apply {
+                setName(dataArray[0])
+                setUserId(dataArray[1])
+                setType(dataArray[2])
+                setContent(dataArray[3])
+            }
+            return builder.build()
         }
-        return builder.build()
+        return null
     }
 }

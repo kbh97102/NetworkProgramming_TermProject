@@ -1,6 +1,8 @@
 package com.example.network_termproject.network
 
 import android.util.Log
+import com.example.network_termproject.ChatDistributor
+import java.io.File
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
@@ -11,7 +13,6 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.function.BiConsumer
 import java.util.function.Consumer
-import kotlin.collections.ArrayList
 
 class Client private constructor() {
     //notebook 120
@@ -26,13 +27,11 @@ class Client private constructor() {
     private var setList: Consumer<NetData>? = null
     private var addChatRoom: BiConsumer<String, ArrayList<String>>? = null
     private val clientDataBuilder: NetData.Builder = NetData.Builder()
+    var chatDistributor: ChatDistributor? = null
+    private var rootDirectory: File? = null
 
     private object ClientHolder {
         val instance = Client()
-    }
-
-    fun testMethod(): Boolean {
-        return socket!!.isConnected
     }
 
     fun setDisplay(display: Consumer<NetData>) {
@@ -41,6 +40,10 @@ class Client private constructor() {
 
     fun setList(setList: Consumer<NetData>?) {
         this.setList = setList
+    }
+
+    fun setRoot(file: File) {
+        rootDirectory = file
     }
 
     private fun socketInit() {
@@ -58,7 +61,6 @@ class Client private constructor() {
             Log.e("Connect", "before")
             socket!!.connect(InetSocketAddress(ip, port))
             Log.e("Connect", "after")
-            read()
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -137,6 +139,10 @@ class Client private constructor() {
         if (Objects.isNull(serverData)) {
             return
         }
+        if (Objects.isNull(chatDistributor)) {
+            chatDistributor = ChatDistributor()
+            chatDistributor!!.init(rootDirectory!!, null)
+        }
         when {
             serverData.getType() == "requestList" -> {
                 setList!!.accept(serverData)
@@ -148,10 +154,12 @@ class Client private constructor() {
                 addChatRoom!!.accept(serverData.getContent(), serverData.getList())
             }
             serverData.getType() == "image" -> {
-                display?.accept(serverData)
+//                display?.accept(serverData)
+                chatDistributor!!.distribute(serverData)
             }
             else -> {
-                display?.accept(serverData)
+//                display?.accept(serverData)
+                chatDistributor!!.distribute(serverData)
             }
         }
     }
@@ -180,4 +188,5 @@ class Client private constructor() {
     init {
         executor.execute { socketInit() }
     }
+
 }

@@ -14,6 +14,7 @@ import com.example.network_termproject.network.Client
 import com.example.network_termproject.network.NetData
 import com.example.network_termproject.recycler.ListAdapter
 import kotlinx.android.synthetic.main.chat_list_layout.*
+import java.io.File
 import java.nio.ByteBuffer
 import java.util.*
 import java.util.function.BiConsumer
@@ -35,11 +36,16 @@ class ChatListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_list_layout)
 
+        Client.instance.setRoot(getOutputDirectory())
+
+        Client.instance.startRead()
         if (!checkPermissions()) {
             ActivityCompat.requestPermissions(this, permissions, 1)
         } else {
             Log.d("Permission", "ok")
         }
+
+
 
         init()
 
@@ -63,6 +69,14 @@ class ChatListActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         }
+    }
+
+    private fun getOutputDirectory(): File {
+        val mediaDir = externalMediaDirs.firstOrNull()?.let {
+            File(it, resources.getString(R.string.app_name)).apply { mkdirs() }
+        }
+        return if (mediaDir != null && mediaDir.exists())
+            mediaDir else filesDir
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

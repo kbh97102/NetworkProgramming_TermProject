@@ -2,19 +2,17 @@ package com.example.network_termproject
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.network_termproject.databinding.ChatRoomLayoutBinding
 import com.example.network_termproject.network.Client
 import com.example.network_termproject.network.NetData
 import com.example.network_termproject.recycler.ChatAdapter
@@ -37,6 +35,7 @@ class ChatRoom : AppCompatActivity() {
     private var isEmojiSelected = false
     private val saver = TalkDataSaver()
     private var talkSaveFile: File? = null
+    private lateinit var chatDistributor: ChatDistributor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,13 +48,26 @@ class ChatRoom : AppCompatActivity() {
         val bundle = intent.getBundleExtra("chatRoomInfo")
         chatRoomInfo = bundle?.getSerializable("chatRoomInfo") as ChatRoomInfo?
 
+        chatDistributor = ChatDistributor()
+        chatDistributor.apply {
+            init(getOutputDirectory(), this@ChatRoom::display)
+            updateCurrentChatRoom(chatRoomInfo!!.room_id!!)
+        }
+        
+//        Client.instance.setDisplay(chatDistributor::distribute)
+
+        Client.instance.chatDistributor = this@ChatRoom.chatDistributor
+
         talkSaveFile = File(getOutputDirectory(), "${chatRoomInfo!!.room_id!!}1.txt")
         if (talkSaveFile!!.exists()) {
             val reader = FileReader(talkSaveFile)
             val bufferedReader = BufferedReader(reader)
             val iterator = bufferedReader.lineSequence().iterator()
             while (iterator.hasNext()) {
-                datas!!.add(saver.parseToNetData(iterator.next()))
+                val saveData = saver.parseToNetData(iterator.next())
+                if (Objects.nonNull(saveData)){
+                    datas!!.add(saveData!!)
+                }
             }
             bufferedReader.close()
         }
@@ -170,7 +182,6 @@ class ChatRoom : AppCompatActivity() {
 
     private fun init() {
         datas = ArrayList()
-        Client.instance.setDisplay(Consumer { data: NetData? -> display(data!!) })
         dataBuilder = NetData.Builder()
     }
 
@@ -182,7 +193,7 @@ class ChatRoom : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val fileWriter = FileWriter(talkSaveFile)
+        val fileWriter = FileWriter(talkSaveFile, true)
         val bufferedWriter = BufferedWriter(fileWriter)
         for (data in datas!!.iterator()) {
             bufferedWriter.write(saver.generate(data.getName(), data.getUserId(), data.getType(), data.getContent()))
@@ -194,6 +205,7 @@ class ChatRoom : AppCompatActivity() {
             close()
         }
 
+        Client.instance.chatDistributor!!.updateCurrentChatRoom(null)
         finish()
     }
 
