@@ -196,8 +196,10 @@ class ChatRoom : AppCompatActivity() {
         val fileWriter = FileWriter(talkSaveFile, true)
         val bufferedWriter = BufferedWriter(fileWriter)
         for (data in datas!!.iterator()) {
-            bufferedWriter.write(saver.generate(data.getName(), data.getUserId(), data.getType(), data.getContent()))
-            bufferedWriter.newLine()
+            if(data.getType() != "image"){
+                bufferedWriter.write(saver.generate(data.getName(), data.getUserId(), data.getType(), data.getContent()))
+                bufferedWriter.newLine()
+            }
         }
 
         bufferedWriter.apply {
