@@ -60,6 +60,16 @@
         android:background="@android:color/transparent"
         />
 
+    <ImageButton
+        android:id="@+id/chat_room_camera_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintEnd_toStartOf="@id/chat_room_editGuideline"
+        app:layout_constraintTop_toBottomOf="@id/chat_room_image_button"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:src="@drawable/camera_icon"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/chat_room_editGuideline"
