@@ -2,9 +2,12 @@ package com.example.network_termproject.recycler
 
 import android.app.Dialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -25,7 +28,10 @@ class ChatAdapter(private val datas: ArrayList<NetData>, private val owner: Stri
             } else {
                 binding.contentTextView.visibility = View.INVISIBLE
                 binding.contentTextView.isFocusable = false
-                binding.contentImageView.setImageBitmap(data.getImage())
+                binding.contentImageView.apply {
+                    setImageBitmap(data.getImage())
+                }
+                Log.e("LeftChatHolder", "${binding.contentImageView.width} + ${binding.contentImageView.height} ")
             }
         }
     }

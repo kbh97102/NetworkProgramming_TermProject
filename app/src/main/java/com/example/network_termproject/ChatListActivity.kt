@@ -23,7 +23,7 @@ import kotlin.collections.HashMap
 
 class ChatListActivity : AppCompatActivity() {
 
-    private val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
 
     private val listRequestCode = 10
     private var chatRooms: HashMap<ChatRoomInfo, ChatRoom>? = null

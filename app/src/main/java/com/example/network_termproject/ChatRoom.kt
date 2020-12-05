@@ -2,6 +2,7 @@ package com.example.network_termproject
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
@@ -20,7 +21,6 @@ import kotlinx.android.synthetic.main.chat_room_layout.*
 import java.io.*
 import java.nio.ByteBuffer
 import java.util.*
-import java.util.function.Consumer
 
 
 @RequiresApi(Build.VERSION_CODES.P)
@@ -54,7 +54,7 @@ class ChatRoom : AppCompatActivity() {
             init(getOutputDirectory(), this@ChatRoom::display)
             updateCurrentChatRoom(chatRoomInfo!!.room_id!!)
         }
-        
+
 //        Client.instance.setDisplay(chatDistributor::distribute)
 
         Client.instance.chatDistributor = this@ChatRoom.chatDistributor
@@ -66,7 +66,7 @@ class ChatRoom : AppCompatActivity() {
             val iterator = bufferedReader.lineSequence().iterator()
             while (iterator.hasNext()) {
                 val saveData = saver.parseToNetData(iterator.next())
-                if (Objects.nonNull(saveData)){
+                if (Objects.nonNull(saveData)) {
                     datas!!.add(saveData!!)
                 }
             }
@@ -175,7 +175,7 @@ class ChatRoom : AppCompatActivity() {
         chat_room_image_button.setOnClickListener {
             getImageFromGallery()
         }
-        chat_room_camera_button.setOnClickListener{
+        chat_room_camera_button.setOnClickListener {
             val intent = Intent(this, CameraActivity::class.java)
             startActivityForResult(intent, cameraRequestCode)
         }
@@ -201,7 +201,7 @@ class ChatRoom : AppCompatActivity() {
         val fileWriter = FileWriter(talkSaveFile, true)
         val bufferedWriter = BufferedWriter(fileWriter)
         for (data in datas!!.iterator()) {
-            if(data.getType() != "image"){
+            if (data.getType() != "image") {
                 bufferedWriter.write(saver.generate(data.getName(), data.getUserId(), data.getType(), data.getContent()))
                 bufferedWriter.newLine()
             }
@@ -267,19 +267,30 @@ class ChatRoom : AppCompatActivity() {
             Client.instance.write(buffer)
 
             chatAdapter!!.notifyDataSetChanged()
-        }
-        else if (requestCode == cameraRequestCode && resultCode == RESULT_OK){
-            val imageData = data!!.getStringExtra("imageData")
-            val baos = ByteArrayOutputStream()
+        } else if (requestCode == cameraRequestCode && resultCode == RESULT_OK && Objects.nonNull(data)) {
+//            val imageData = data!!.getByteArrayExtra("imageData")
+
+            val imageFileName = data!!.getStringExtra("imageData")
+
+            val filepath = File(getOutputDirectory(), imageFileName!!)
+
+            val imageBitmap = BitmapFactory.decodeFile(filepath.path)
+
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream)
+
+            val encodedData = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+
+            byteArrayOutputStream.close()
             val clientData = dataBuilder!!.setName(Client.instance.name)
                     .setType("image")
-                    .setContent(imageData!!)
+                    .setContent(encodedData)
                     .setRoomId(chatRoomInfo!!.room_id!!)
                     .setUserId(Client.instance.id!!)
                     .build()
 
             datas!!.add(clientData)
-            baos.close()
+
 
             val header = ByteBuffer.allocate(6)
             header.apply {
