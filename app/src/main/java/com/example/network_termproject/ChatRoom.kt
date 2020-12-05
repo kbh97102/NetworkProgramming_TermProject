@@ -26,6 +26,7 @@ import java.util.function.Consumer
 @RequiresApi(Build.VERSION_CODES.P)
 class ChatRoom : AppCompatActivity() {
 
+    private val cameraRequestCode = 50
     private val galleryRequestCode = 30
     private var chatAdapter: ChatAdapter? = null
     private var datas: ArrayList<NetData>? = null
@@ -174,6 +175,10 @@ class ChatRoom : AppCompatActivity() {
         chat_room_image_button.setOnClickListener {
             getImageFromGallery()
         }
+        chat_room_camera_button.setOnClickListener{
+            val intent = Intent(this, CameraActivity::class.java)
+            startActivityForResult(intent, cameraRequestCode)
+        }
     }
 
     private fun hideKeyboard() {
@@ -238,6 +243,37 @@ class ChatRoom : AppCompatActivity() {
             val clientData = dataBuilder!!.setName(Client.instance.name)
                     .setType("image")
                     .setContent(imageData)
+                    .setRoomId(chatRoomInfo!!.room_id!!)
+                    .setUserId(Client.instance.id!!)
+                    .build()
+
+            datas!!.add(clientData)
+            baos.close()
+
+            val header = ByteBuffer.allocate(6)
+            header.apply {
+                putChar('s')
+                putInt(clientData.data.toString().toByteArray().size)
+                flip()
+            }
+
+            var buffer = ByteBuffer.allocate(6 + clientData.data.toString().toByteArray().size)
+            buffer.apply {
+                put(header)
+                put(clientData.data.toString().toByteArray())
+            }
+            buffer.flip()
+
+            Client.instance.write(buffer)
+
+            chatAdapter!!.notifyDataSetChanged()
+        }
+        else if (requestCode == cameraRequestCode && resultCode == RESULT_OK){
+            val imageData = data!!.getStringExtra("imageData")
+            val baos = ByteArrayOutputStream()
+            val clientData = dataBuilder!!.setName(Client.instance.name)
+                    .setType("image")
+                    .setContent(imageData!!)
                     .setRoomId(chatRoomInfo!!.room_id!!)
                     .setUserId(Client.instance.id!!)
                     .build()
