@@ -23,7 +23,6 @@ class Client private constructor() {
     var id: String? = null
     private var socket: SocketChannel? = null
     private var executor: ExecutorService = Executors.newFixedThreadPool(10)
-    private var display: Consumer<NetData>? = null
     private var setList: Consumer<NetData>? = null
     private var addChatRoom: BiConsumer<String, ArrayList<String>>? = null
     private val clientDataBuilder: NetData.Builder = NetData.Builder()
@@ -32,10 +31,6 @@ class Client private constructor() {
 
     private object ClientHolder {
         val instance = Client()
-    }
-
-    fun setDisplay(display: Consumer<NetData>) {
-        this.display = display
     }
 
     fun setList(setList: Consumer<NetData>?) {
@@ -58,9 +53,7 @@ class Client private constructor() {
 
     private fun connect() {
         try {
-            Log.e("Connect", "before")
             socket!!.connect(InetSocketAddress(ip, port))
-            Log.e("Connect", "after")
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -70,13 +63,6 @@ class Client private constructor() {
         executor.execute { read() }
     }
 
-    /*
-    타입에 따라 형식 변경해야됨
-    1. 텍스트
-    2. 이미지 (이모니콘)
-    3. 파일
-    4. 음성
-     */
     fun write(data: NetData?) {
         executor.execute {
             try {
@@ -91,10 +77,7 @@ class Client private constructor() {
     fun write(headerBuffer: ByteBuffer?) {
         executor.execute {
             try {
-
                 socket!!.write(headerBuffer)
-                Log.e("after", headerBuffer.toString())
-
             } catch (e: IOException) {
                 disconnect()
                 e.printStackTrace()
@@ -102,8 +85,6 @@ class Client private constructor() {
         }
     }
 
-    //s int
-    //
     private fun read() {
         executor.execute {
             while (true) {
@@ -115,18 +96,14 @@ class Client private constructor() {
                     }
                     buffer.flip()
                     val c = buffer.char
-                    Log.e("Header char", c.toString())
                     val size = buffer.int
-                    Log.e("Header size ", " $size")
                     val dataBuffer = ByteBuffer.allocate(size)
                     while (dataBuffer.hasRemaining()) {
                         socket!!.read(dataBuffer)
                     }
 
                     val receivedData = clientDataBuilder.parseServerData(String(dataBuffer.array()))
-                    Log.e("Server Data", receivedData.data.toString())
                     doWorkWithType(receivedData)
-                    //화면에 반영 하기만 하면 됨
                 } catch (e: IOException) {
                     disconnect()
                     e.printStackTrace()
@@ -154,11 +131,9 @@ class Client private constructor() {
                 addChatRoom!!.accept(serverData.getContent(), serverData.getList())
             }
             serverData.getType() == "image" -> {
-//                display?.accept(serverData)
                 chatDistributor!!.distribute(serverData)
             }
             else -> {
-//                display?.accept(serverData)
                 chatDistributor!!.distribute(serverData)
             }
         }

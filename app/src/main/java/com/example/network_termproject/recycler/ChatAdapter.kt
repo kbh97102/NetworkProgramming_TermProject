@@ -1,13 +1,9 @@
 package com.example.network_termproject.recycler
 
-import android.app.Dialog
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -17,7 +13,7 @@ import com.example.network_termproject.databinding.ChatRightLayoutBinding
 import com.example.network_termproject.network.NetData
 import java.util.*
 
-class ChatAdapter(private val datas: ArrayList<NetData>, private val owner: String, private val supportFragmentManager : FragmentManager) : RecyclerView.Adapter<ViewHolder>() {
+class ChatAdapter(private val datas: ArrayList<NetData>, private val owner: String, private val supportFragmentManager: FragmentManager) : RecyclerView.Adapter<ViewHolder>() {
     internal inner class LeftChatHolder(val binding: ChatLeftLayoutBinding) : ViewHolder(binding.root) {
         fun bind(data: NetData) {
             binding.nameTextView.text = data.getName()
@@ -52,7 +48,7 @@ class ChatAdapter(private val datas: ArrayList<NetData>, private val owner: Stri
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (datas[position].getName() == owner ) {
+        return if (datas[position].getName() == owner) {
             1
         } else {
             2
@@ -73,7 +69,8 @@ class ChatAdapter(private val datas: ArrayList<NetData>, private val owner: Stri
             leftHolder.bind(datas[position])
             holder.binding.root.setOnClickListener {
                 val testDialog = ImageDialog(datas[position].getImage())
-                testDialog.show(supportFragmentManager, "Tag") }
+                testDialog.show(supportFragmentManager, "Tag")
+            }
         } else if (holder.itemViewType == 2) {
             val rightHOlder = holder as RightChatHolder
             rightHOlder.bind(datas[position])

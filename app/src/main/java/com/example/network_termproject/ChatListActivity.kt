@@ -45,8 +45,6 @@ class ChatListActivity : AppCompatActivity() {
             Log.d("Permission", "ok")
         }
 
-
-
         init()
 
         listAdapter = ListAdapter(chatRoomInfos, this)
@@ -87,9 +85,7 @@ class ChatListActivity : AppCompatActivity() {
             if (Objects.isNull(userList) || userList.size <= 0) {
                 return
             }
-            //선택된 친구 아이디 리스트에 자기 자신도 포함
             userList.add(Client.instance.id)
-            //본인 포함 선택된 친구들 리스트와 함께 채팅방 생성 요청
             val mainData = dataBuilder!!.setType("requestAdd")
                     .setUserId(Client.instance.id!!)
                     .setList(userList)

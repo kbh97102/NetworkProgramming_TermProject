@@ -55,8 +55,6 @@ class ChatRoom : AppCompatActivity() {
             updateCurrentChatRoom(chatRoomInfo!!.room_id!!)
         }
 
-//        Client.instance.setDisplay(chatDistributor::distribute)
-
         Client.instance.chatDistributor = this@ChatRoom.chatDistributor
 
         talkSaveFile = File(getOutputDirectory(), "${chatRoomInfo!!.room_id!!}1.txt")
@@ -268,7 +266,6 @@ class ChatRoom : AppCompatActivity() {
 
             chatAdapter!!.notifyDataSetChanged()
         } else if (requestCode == cameraRequestCode && resultCode == RESULT_OK && Objects.nonNull(data)) {
-//            val imageData = data!!.getByteArrayExtra("imageData")
 
             val imageFileName = data!!.getStringExtra("imageData")
 

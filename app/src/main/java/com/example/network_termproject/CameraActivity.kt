@@ -25,8 +25,6 @@ class CameraActivity :AppCompatActivity(){
 
         cameraController = CameraController(previewView = camera_previewView, lifecycleOwner = this as LifecycleOwner, this)
 
-
-
         camera_change_button.setOnClickListener {
             cameraController.apply {
                 unbind()
@@ -50,10 +48,6 @@ class CameraActivity :AppCompatActivity(){
         }
         camera_ok_button.setOnClickListener {
             if(camera_imageView.visibility == View.VISIBLE){
-//                val bitmap = (camera_imageView.drawable as BitmapDrawable).bitmap
-//                val stream = ByteArrayOutputStream()
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
-//                val encodedData = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
                 val intent = Intent()
                 intent.putExtra("imageData", "snapshot.jpg")
                 setResult(RESULT_OK, intent)

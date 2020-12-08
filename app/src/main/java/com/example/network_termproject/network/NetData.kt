@@ -90,7 +90,6 @@ class NetData {
             }
             return receivedData
         }
-        //Builder last
     }
 
     fun getType(): String {
@@ -117,7 +116,7 @@ class NetData {
         val array = data.getJSONArray("list")
         val arr = ArrayList<String>()
         if (array.length() <= 0){
-            Log.e("Size is zero", "test")
+            Log.e("Size is zero", "Error")
         }
         for (id in 0 until array.length()){
             arr.add(array.getString(id).replace("[", "").replace("]",""))
