@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/chat_room_root_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:background="#7eb5cc"
+        android:id="@+id/chat_room_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="ChatRoom"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:background="#7eb5cc"
+        android:id="@+id/chat_room_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/chat_room_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/chat_room_editText"
+        />
+
+    <EditText
+        android:id="@+id/chat_room_editText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/chat_room_editGuideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chat_room_editTop"
+        android:background="@android:color/white"
+        />
+
+    <ImageButton
+        android:id="@+id/chat_room_emoji_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/chat_room_editGuideline"
+        app:layout_constraintTop_toBottomOf="@id/chat_room_editTop"
+        android:src="@drawable/testicon"
+        android:background="@android:color/transparent"
+        />
+
+    <ImageButton
+        android:id="@+id/chat_room_image_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintEnd_toStartOf="@id/chat_room_editGuideline"
+        app:layout_constraintTop_toBottomOf="@id/chat_room_emoji_button"
+        android:src="@drawable/add"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        />
+
+    <ImageButton
+        android:id="@+id/chat_room_camera_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintEnd_toStartOf="@id/chat_room_editGuideline"
+        app:layout_constraintTop_toBottomOf="@id/chat_room_image_button"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:src="@drawable/camera_icon"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/chat_room_editGuideline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/chat_room_editTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85"
+        />
+
+    <Button
+        android:id="@+id/chat_room_sendButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/chat_room_editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/chat_room_editTop"
+        android:text="@string/send"
+        android:background="#fbff00"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/emoji_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/chat_room_editText"
+        android:background="@android:color/transparent"
+        android:visibility="invisible"
+        >
+        <ImageView
+            android:id="@+id/icon_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="30dp"
+            />
+
+        <ImageView
+            android:id="@+id/icon_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_2"
+            app:layout_constraintStart_toEndOf="@id/icon_1"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="30dp"
+            />
+
+        <ImageView
+            android:id="@+id/icon_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_3"
+            app:layout_constraintStart_toEndOf="@id/icon_2"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="30dp"
+            />
+
+        <ImageView
+            android:id="@+id/icon_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_4"
+            app:layout_constraintStart_toEndOf="@id/icon_3"
+            app:layout_constraintTop_toTopOf="parent"
+
+            android:layout_marginStart="30dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
